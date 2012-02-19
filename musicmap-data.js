@@ -15,14 +15,32 @@ function artistOrigin(artist){
    function(response){		// Request Function		
    	
    	if(response.code == "/api/status/ok" && response.result.length > 0){
-   			var origen = response.result[0].origin[0];
-				var url="https://usercontent.googleapis.com/freebase/v1/image";
-				url+= 				response.result[0]["/common/topic/image"][0].id;
-				$("#app-bar-status").get(0).innerHTML=response.result[0].origin[0].name; //Test
+				var result= response.result[0]; 			
+   			var origin = result.origin[0];
+				var url;  
+				 			
+   			if(result["/common/topic/image"][0].id != ""){ // Check Image
+					
+					url="https://usercontent.googleapis.com/freebase/v1/image";
+					url+= result["/common/topic/image"][0].id;
+				}
+				$("#app-bar-status").get(0).innerHTML= origin.name; //Test
 				
-				map.createMarker(origen.geolocation.latitude, 
-				origen.geolocation.longitude,
-				response.result[0].name,url);	
+				map.reset();				
+				
+				map.createMarker(origin.geolocation.latitude, 
+				origin.geolocation.longitude,
+				result.name,url);	 // Create Marker
+				
+				var content = "<h2>"+result.name+"</h2> ";
+				content+="<p>"+origin.name+"</p>";
+				content+="<img src='"+url+"'>";				
+				
+				var info = map.createInfoWindow(origin.geolocation.latitude, 
+				origin.geolocation.longitude,content);  // Create Info Window
+				
+				info.open(map);
+				
 		}	
 		
 	});                    

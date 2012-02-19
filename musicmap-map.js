@@ -11,28 +11,30 @@ var initMap = function(){
 }
 
 google.maps.Map.prototype.createMarker = function(lat,lng,title,imgUrl){
-	this.reset(); // Whole Map
 	
 	var latlng = new google.maps.LatLng(lat,lng);
-	if(imgUrl!=""){	
-		var markerOptions = {
-			position: latlng,
-			map: this,
-			title: title,
-			icon:imgUrl,
-			animation: google.maps.Animation.DROP 
-		}
-	}else{
-		var markerOptions = {
-			position: latlng,
-			map: this,
-			title: title,
-			animation: google.maps.Animation.DROP 
-		}
+	var markerOptions = {
+		position: latlng,
+		map: this,
+		title: title,
+		//icon:imgUrl,
+		animation: google.maps.Animation.DROP 
 	}
 	var marker= new google.maps.Marker(markerOptions);	
 	return marker;
 
+}
+
+google.maps.Map.prototype.createInfoWindow = function(lat,lng,content){
+	
+	var latlng = new google.maps.LatLng(lat,lng);
+	var infoOptions = {
+		position: latlng,
+		content: content,
+		pixelOffset : new google.maps.Size(0,-35),
+	}
+	var info= new google.maps.InfoWindow(infoOptions);	
+	return info;
 }
 
 google.maps.Map.prototype.reset= function(){
